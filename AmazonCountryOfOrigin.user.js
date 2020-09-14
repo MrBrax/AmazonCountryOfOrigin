@@ -48,9 +48,9 @@ let database = {
 };
 
 let flags = {
-  "china": "????",
-  "taiwan": "????",
-  "thailand": "????",
+  "china": "🇨🇳",
+  "taiwan": "🇹🇼",
+  "thailand": "🇹🇭",
 };
 
 let titles = document.querySelectorAll("span.a-size-medium, #productTitle");
