@@ -6,7 +6,7 @@
 // @match       https://www.amazon.co.uk/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.01
+// @version     1.02
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -28,6 +28,8 @@ let database = {
     'Microsoft Bluetooth Mouse',
     
     'Razer DeathAdder',
+
+    /Sony MDR-?ZX310AP\s/i,
 
     /^Motorola One Zoom/i,
 
@@ -61,12 +63,20 @@ let database = {
     /^POCO/i,
     /^OnePlus^/i,
     /^Huawei/i,
+    /^Soundcore/i,
+    /^OneOdio/i,
+    /^JBL/i, // unsure
+    /^AUKEY/i, // unsure
+    /^TP\-Link/i,
+    /^ZTE/i,
+    /^DJI/i
   ],
   'taiwan': [
     'SteelSeries QcK',
+    // /^ASUS/i,
   ],
   'thailand': [
-    /Sony MDR-?ZX310/,
+    /Sony MDR-?ZX310\s/,
     'HP Tango',
     /^(WD|Western Digital) Elements Desktop/i,
     /^(WD|Western Digital) [0-9]+\s?TB (Elements Desktop|My Cloud)/i,
@@ -100,25 +110,21 @@ let flags = {
   "malaysia": "🇲🇾"
 };
 
-let titles = document.querySelectorAll("span.a-size-medium, span.a-text-normal, h2.s-access-title, #productTitle");
-
-if( titles.length == 0){
-  console.error("Found no titles");
-}
-
-for( let title of titles ){
+function applyFlag( element ){
 
   let found = false;
   let flag_string = "";
 
-  let text = title.innerText;
+  let text = element.innerText.toLowerCase().trim();
 
-  if( text.substring(0, 1) == "€" || text.substring(0, 1) == "$" ) continue;
+  if( text.substring(0, 1) == "€" || text.substring(0, 1) == "$" ) return;
+
+  console.debug( element, text );
 
   for( let country in database){
     let products = database[country];
     for( let product of products){
-      if( typeof title == "string" ? ( text.toLowerCase().indexOf(product.toLowerCase()) !== -1 ) : ( text.match(product) ) ){
+      if( typeof product == "string" ? ( text.indexOf(product.toLowerCase()) !== -1 ) : ( text.match(product) ) ){
         found = true;
         flag_string = country;
         break;
@@ -133,10 +139,40 @@ for( let title of titles ){
   flag.style.display = "inline-block";
   flag.style.marginRight = "3px";
   flag.style.fontSize = "1em";
-  title.prepend(flag);
+  element.prepend(flag);
 
   if( flag_string == "china" ){
-    title.style.color = "#f00";
+    element.style.color = "#f00";
   }
+}
 
+let isProductPage = location.href.match("/dp/");
+
+let titles;
+
+if( isProductPage ){
+  titles = document.querySelectorAll("#productTitle");
+}else{
+  titles = document.querySelectorAll("span.a-size-medium, span.a-text-normal, h2.s-access-title, #productTitle");
+}
+
+for( let title of titles ){
+  console.debug("Titles");
+  applyFlag(title);
+}
+
+let comparisonTitles = document.querySelectorAll("th.comparison_image_title_cell span.a-size-base");
+if( comparisonTitles ){
+  for( let title of comparisonTitles ){
+    console.debug("Comparison titles");
+    applyFlag(title);
+  }
+}
+
+let alsoViewedTitles = document.querySelectorAll("li.a-carousel-card div.p13n-sc-truncate-mobile-type");
+if( alsoViewedTitles ){
+  for( let title of alsoViewedTitles ){
+    console.debug("Also viewed titles");
+    applyFlag(title);
+  }
 }
