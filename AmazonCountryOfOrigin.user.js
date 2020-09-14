@@ -5,7 +5,8 @@
 // @match       https://www.amazon.com/*
 // @match       https://www.amazon.co.uk/*
 // @grant       none
-// @version     1.0
+// @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
+// @version     1.01
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -36,6 +37,14 @@ let database = {
     /^Xbox Wireless Controller/i,
     
     /Nintendo Switch Pro Controller/i,
+
+    /^Apple AirPods/i,
+    /^Apple iPhone/i,
+    /^Apple Pencil/i,
+
+    /^Samsung Galaxy/i, // charged until proven guilty
+
+    /^SanDisk (Ultra|Extreme)/i,
     
     // broad range
     'Holife',
@@ -48,7 +57,10 @@ let database = {
     'UtechSmart',
     /^JAMSWALL/i,
     /^Xiaomi/i,
-    /^Huawei/i
+    /^OPPO/i,
+    /^POCO/i,
+    /^OnePlus^/i,
+    /^Huawei/i,
   ],
   'taiwan': [
     'SteelSeries QcK',
@@ -57,7 +69,11 @@ let database = {
     /Sony MDR-?ZX310/,
     'HP Tango',
     /^(WD|Western Digital) Elements Desktop/i,
-    /^(WD|Western Digital) [0-9+]TB Elements Desktop/i,
+    /^(WD|Western Digital) [0-9]+\s?TB (Elements Desktop|My Cloud)/i,
+    /^(WD|Western Digital) [0-9]+\s?TB /i,
+    /^(WD|Western Digital) Red Internal/i,
+    /^(WD|Western Digital) Blue/i,
+    /^My Book Desktop/i,
   ],
   'korea': [
     /^Nvidia Shield.? TV/i,
@@ -84,7 +100,7 @@ let flags = {
   "malaysia": "🇲🇾"
 };
 
-let titles = document.querySelectorAll("span.a-size-medium, span.a-text-normal, #productTitle");
+let titles = document.querySelectorAll("span.a-size-medium, span.a-text-normal, h2.s-access-title, #productTitle");
 
 if( titles.length == 0){
   console.error("Found no titles");
