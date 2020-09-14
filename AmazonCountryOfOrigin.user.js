@@ -27,6 +27,8 @@ let database = {
     'Microsoft Bluetooth Mouse',
     
     'Razer DeathAdder',
+
+    /^Motorola One Zoom/,
     
     // broad range
     'Holife',
@@ -42,8 +44,17 @@ let database = {
     'SteelSeries QcK'
   ],
   'thailand': [
-    'Sony MDR-ZX310',
-    'Sony MDRZX310',
+    /Sony MDR-?ZX310/,
+    'HP Tango'
+  ],
+  'korea': [
+    /^Nvidia Shield.? TV/i,
+  ],
+  'vietnam': [
+    /Korg TM-?60/i
+  ],
+  'indonesia': [
+
   ]
 };
 
@@ -51,32 +62,44 @@ let flags = {
   "china": "🇨🇳",
   "taiwan": "🇹🇼",
   "thailand": "🇹🇭",
+  "korea": "🇰🇷",
+  "vietnam": "🇻🇳",
+  "indonesia": "🇮🇩",
 };
 
-let titles = document.querySelectorAll("span.a-size-medium, #productTitle");
+let titles = document.querySelectorAll("span.a-size-medium, span.a-text-normal, #productTitle");
 
 if( titles.length == 0){
   console.error("Found no titles");
 }
 
 for( let title of titles ){
+
+  let found = false;
+  let flag_string = "";
+
   for( let country in database){
     let products = database[country];
     for( let product of products){
-      if( title.innerText.toLowerCase().indexOf(product.toLowerCase()) !== -1 ){
-        let flag = document.createElement("span");
-        flag.className = "flag";
-        flag.innerHTML = flags[country];
-        flag.title = country;
-        flag.style.display = "inline-block";
-        flag.style.marginRight = "3px";
-        flag.style.fontSize = "1em";
-        title.prepend(flag);
-        if( country == "china" ){
-          title.style.color = "#f00";
-        }
+      if( typeof title == "string" ? ( title.innerText.toLowerCase().indexOf(product.toLowerCase()) !== -1 ) : ( title.innerText.match(product) ) ){
+        found = true;
+        flag_string = country;
         break;
       }
     }
   }
+
+  let flag = document.createElement("span");
+  flag.className = "flag";
+  flag.innerHTML = flag_string ? flags[flag_string] : "❓";
+  flag.title = flag_string;
+  flag.style.display = "inline-block";
+  flag.style.marginRight = "3px";
+  flag.style.fontSize = "1em";
+  title.prepend(flag);
+
+  if( flag_string == "china" ){
+    title.style.color = "#f00";
+  }
+
 }
