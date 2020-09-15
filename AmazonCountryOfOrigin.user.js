@@ -6,7 +6,7 @@
 // @match       https://www.amazon.co.uk/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.03
+// @version     1.04
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -38,6 +38,7 @@ let database = {
     /^xbox one wireless controller/i,
     /^Xbox Elite Wireless Controller/i,
     /^Xbox Wireless Controller/i,
+    /^Xbox\s360\sController/i,
     
     /Nintendo Switch Pro Controller/i,
 
@@ -81,6 +82,8 @@ let database = {
     /^Lenovo/i,
     /^Motorola/i,
     /^HKC/i,
+    /^HiQuick/i,
+    /^Intenso/i, // unsure
   ],
   'taiwan': [
     'SteelSeries QcK',
@@ -98,6 +101,7 @@ let database = {
   ],
   'korea': [
     /^Nvidia Shield.? TV/i,
+    /^Samsung EVO Select/i,
   ],
   'vietnam': [
     /Korg TM-?60/i
@@ -108,6 +112,12 @@ let database = {
   'malaysia': [
     /^(WD|Western Digital) Elements (Portable|External)/i,
     /^(WD|Western Digital) My Passport/i
+  ],
+  'uk': [
+    /^Raspberry\sPi\s4/i,
+  ],
+  'multiple': [
+    /^Varta/i
   ]
 };
 
@@ -118,12 +128,19 @@ let flags = {
   "korea": "🇰🇷",
   "vietnam": "🇻🇳",
   "indonesia": "🇮🇩",
-  "malaysia": "🇲🇾"
+  "malaysia": "🇲🇾",
+  "uk": "🇬🇧",
+  "multiple": "❗",
 };
 
 function applyFlag( baseElement, titleElement ){
 
-  if(baseElement.applied) return;
+  console.debug("apply flag", baseElement, titleElement);
+
+  if(baseElement.applied){
+    console.debug("already applied", baseElement);
+    return;
+  }
 
   let found = false;
   let flag_string = "";
@@ -138,6 +155,7 @@ function applyFlag( baseElement, titleElement ){
     let products = database[country];
     for( let product of products){
       if( typeof product == "string" ? ( text.indexOf(product.toLowerCase()) !== -1 ) : ( text.match(product) ) ){
+        console.log("found", text, country);
         found = true;
         flag_string = country;
         break;
@@ -194,6 +212,14 @@ function runScript(){
   if( octopus ){
     for( let element of octopus ){
       let title = element.querySelector("div.octopus-pc-asin-title");
+      if(title) applyFlag(element, title);
+    }
+  }
+
+  let historyBoxes = document.querySelectorAll("div.asin_container");
+  if( historyBoxes ){
+    for( let element of historyBoxes ){
+      let title = element.querySelector("div.p13n-sc-truncated");
       if(title) applyFlag(element, title);
     }
   }
