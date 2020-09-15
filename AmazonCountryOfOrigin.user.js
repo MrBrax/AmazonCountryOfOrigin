@@ -6,7 +6,7 @@
 // @match       https://www.amazon.co.uk/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.02
+// @version     1.03
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -19,6 +19,7 @@ let database = {
     'Logitech B100',
     'Logitech M705',
     'Logitech MX Ergo',
+    /^Logitech K280e/i,
     
     'SteelSeries Rival 100',
     'SteelSeries Rival 310',
@@ -47,6 +48,8 @@ let database = {
     /^Samsung Galaxy/i, // charged until proven guilty
 
     /^SanDisk (Ultra|Extreme)/i,
+
+    /^Fujifilm X-T/i,
     
     // broad range
     'Holife',
@@ -69,7 +72,15 @@ let database = {
     /^AUKEY/i, // unsure
     /^TP\-Link/i,
     /^ZTE/i,
-    /^DJI/i
+    /^DJI/i,
+    /^LeadsaiL/i,
+    /^Speedlink/i,
+    /^Jelly Comb/i,
+    /^Hisense/i,
+    /^Fiio/i,
+    /^Lenovo/i,
+    /^Motorola/i,
+    /^HKC/i,
   ],
   'taiwan': [
     'SteelSeries QcK',
@@ -110,16 +121,18 @@ let flags = {
   "malaysia": "🇲🇾"
 };
 
-function applyFlag( element ){
+function applyFlag( baseElement, titleElement ){
+
+  if(baseElement.applied) return;
 
   let found = false;
   let flag_string = "";
 
-  let text = element.innerText.toLowerCase().trim();
+  let text = titleElement.innerText.toLowerCase().trim();
 
   if( text.substring(0, 1) == "€" || text.substring(0, 1) == "$" ) return;
 
-  console.debug( element, text );
+  console.debug( titleElement, text );
 
   for( let country in database){
     let products = database[country];
@@ -139,15 +152,20 @@ function applyFlag( element ){
   flag.style.display = "inline-block";
   flag.style.marginRight = "3px";
   flag.style.fontSize = "1em";
-  element.prepend(flag);
+  titleElement.prepend(flag);
 
   if( flag_string == "china" ){
-    element.style.color = "#f00";
+    titleElement.style.color = "#f00";
+    baseElement.style.backgroundColor = '#fdb1b1';
   }
+
+  baseElement.applied = true;
+
 }
 
 let isProductPage = location.href.match("/dp/");
 
+/*
 let titles;
 
 if( isProductPage ){
@@ -160,7 +178,51 @@ for( let title of titles ){
   console.debug("Titles");
   applyFlag(title);
 }
+*/
 
+function runScript(){
+
+  let searchResults = document.querySelectorAll("div.s-result-item");
+  if( searchResults ){
+    for( let element of searchResults ){
+      let title = element.querySelector("span.a-size-medium");
+      if(title) applyFlag(element, title);
+    }
+  }
+
+  let octopus = document.querySelectorAll("li.octopus-pc-item");
+  if( octopus ){
+    for( let element of octopus ){
+      let title = element.querySelector("div.octopus-pc-asin-title");
+      if(title) applyFlag(element, title);
+    }
+  }
+
+  let carouselContainers = document.querySelectorAll("ol.a-carousel");
+  if( carouselContainers ){
+    for( let element of carouselContainers ){
+      let carouselCards = element.querySelectorAll("li.a-carousel-card");
+      for( let card of carouselCards ){
+        let title = card.querySelector("span.a-text-normal, div.sponsored-products-truncator-truncated, div.p13n-sc-truncated");
+        if(title) applyFlag(card, title);
+      }
+    }
+  }
+
+  let productPage = document.querySelector("#ppd");
+  if( productPage ){
+    let title = productPage.querySelector("#productTitle");
+    if(title) applyFlag(productPage, title);
+  }
+
+}
+
+runScript();
+
+setInterval(runScript, 5000); // find a better way to do this
+
+
+/*
 let comparisonTitles = document.querySelectorAll("th.comparison_image_title_cell span.a-size-base");
 if( comparisonTitles ){
   for( let title of comparisonTitles ){
@@ -176,3 +238,4 @@ if( alsoViewedTitles ){
     applyFlag(title);
   }
 }
+*/
