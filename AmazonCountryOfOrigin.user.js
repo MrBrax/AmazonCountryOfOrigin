@@ -6,7 +6,7 @@
 // @match       https://www.amazon.co.uk/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.04
+// @version     1.05
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -44,6 +44,7 @@ let database = {
 
     /^Apple AirPods/i,
     /^Apple iPhone/i,
+    /^Apple iPad/i,
     /^Apple Pencil/i,
 
     /^Samsung Galaxy/i, // charged until proven guilty
@@ -51,6 +52,8 @@ let database = {
     /^SanDisk (Ultra|Extreme)/i,
 
     /^Fujifilm X-T/i,
+
+    /^NETGEAR Nighthawk/i,
     
     // broad range
     'Holife',
@@ -84,9 +87,14 @@ let database = {
     /^HKC/i,
     /^HiQuick/i,
     /^Intenso/i, // unsure
+    /^Roku/i, // assembled in china
+    /^Ubiquiti/i, // unsure
+    /^AOC/i, // owned by TPV technology,
+    /^TCL/i,
   ],
   'taiwan': [
     'SteelSeries QcK',
+    /^Corsair\sVengeance/i,
     // /^ASUS/i,
   ],
   'thailand': [
@@ -98,26 +106,30 @@ let database = {
     /^(WD|Western Digital) Red Internal/i,
     /^(WD|Western Digital) Blue/i,
     /^My Book Desktop/i,
+    /^Seagate BarraCuda/i,
   ],
   'korea': [
-    /^Nvidia Shield.? TV/i,
-    /^Samsung EVO Select/i,
+    /^Nvidia Shield.?\s?(Android)?\s?TV/i,
+    /^Samsung ([0-9]+) EVO/i,
   ],
   'vietnam': [
-    /Korg TM-?60/i
+    /Korg TM-?60/i,
+    /^Google Nest/i,
   ],
   'indonesia': [
 
   ],
   'malaysia': [
     /^(WD|Western Digital) Elements (Portable|External)/i,
-    /^(WD|Western Digital) My Passport/i
+    /^(WD|Western Digital) My Passport/i,
+    /^AMD Ryzen/i,
   ],
   'uk': [
     /^Raspberry\sPi\s4/i,
   ],
   'multiple': [
-    /^Varta/i
+    /^Varta/i,
+    /^Samsung (Electronics)? EVO Select/i,
   ]
 };
 
@@ -212,6 +224,14 @@ function runScript(){
   if( octopus ){
     for( let element of octopus ){
       let title = element.querySelector("div.octopus-pc-asin-title");
+      if(title) applyFlag(element, title);
+    }
+  }
+
+  let resultList = document.querySelectorAll("li.s-result-item");
+  if( resultList ){
+    for( let element of resultList ){
+      let title = element.querySelector("h2.s-access-title");
       if(title) applyFlag(element, title);
     }
   }
