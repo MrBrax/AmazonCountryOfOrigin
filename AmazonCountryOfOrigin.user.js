@@ -8,7 +8,7 @@
 // @match       https://www.netonnet.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.06
+// @version     1.07
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -23,7 +23,8 @@ let database = {
 	/^Logitech G203/i,
     /^Logitech MX Ergo/i,
     /^Logitech MX Master/i,
-    /^Logitech K280e/i,
+	/^Logitech K280e/i,
+	/^Logitech G PRO/i,
     
     'SteelSeries Rival 100',
     'SteelSeries Rival 310',
@@ -50,7 +51,8 @@ let database = {
     /^Apple AirPods/i,
     /^Apple iPhone/i,
     /^Apple iPad/i,
-    /^Apple Pencil/i,
+	/^Apple Pencil/i,
+	/^Apple MacBook/i,
 
     /^Samsung Galaxy/i, // charged until proven guilty
 
