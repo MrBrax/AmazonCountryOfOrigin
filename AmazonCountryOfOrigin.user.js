@@ -152,10 +152,10 @@ class CountryOfOrigin {
 
 	applyFlag( baseElement, titleElement ){
 
-		console.debug("apply flag", baseElement, titleElement);
+		// console.debug("apply flag", baseElement, titleElement);
 	  
 		if(baseElement.applied){
-		  console.debug("already applied", baseElement);
+		  // console.debug("already applied", baseElement);
 		  return;
 		}
 	  
@@ -166,18 +166,18 @@ class CountryOfOrigin {
 	  
 		if( text.substring(0, 1) == "€" || text.substring(0, 1) == "$" ) return;
 	  
-		console.debug( titleElement, text );
+		// console.debug( titleElement, text );
 	  
 		for( let country in database){
-		  let products = database[country];
-		  for( let product of products){
-			if( typeof product == "string" ? ( text.indexOf(product.toLowerCase()) !== -1 ) : ( text.match(product) ) ){
-			  console.log("found", text, country);
-			  found = true;
-			  flag_string = country;
-			  break;
+			let products = database[country];
+			for( let product of products){
+				if( typeof product == "string" ? ( text.indexOf(product.toLowerCase()) !== -1 ) : ( text.match(product) ) ){
+					// console.log("found", text, country);
+					found = true;
+					flag_string = country;
+					break;
+				}
 			}
-		  }
 		}
 	  
 		let flag = document.createElement("span");
@@ -205,7 +205,7 @@ class CountryOfOrigin {
 	}
 
 	runScript(){
-		console.error("No site");	
+		// console.error("No site");	
 	}
 
 }
@@ -334,7 +334,7 @@ class Prisjakt extends CountryOfOrigin {
 
 	runScript(){
 		let results = document.querySelectorAll("tr.Tr-sc-1stvbsu-1");
-		console.log("Found " + results.length + " results");
+		// console.log("Found " + results.length + " results");
 		for( let element of results ){
 			let title = element.querySelector("h3");
 			if(title) this.applyFlag(element, title);
