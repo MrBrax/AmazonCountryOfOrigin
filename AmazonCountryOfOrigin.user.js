@@ -4,6 +4,7 @@
 // @match       https://www.amazon.de/*
 // @match       https://www.amazon.com/*
 // @match       https://www.amazon.co.uk/*
+// @match       https://www.inet.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
 // @version     1.05
@@ -13,12 +14,14 @@
 
 let database = {
   'china': [
-    'Logitech M185',
-    'Logitech M187',
-    'Logitech M100',
-    'Logitech B100',
-    'Logitech M705',
-    'Logitech MX Ergo',
+    /^Logitech M185/i,
+    /^Logitech M187/i,
+    /^Logitech M100/i,
+    /^Logitech B100/i,
+	/^Logitech M705/i,
+	/^Logitech G203/i,
+    /^Logitech MX Ergo/i,
+    /^Logitech MX Master/i,
     /^Logitech K280e/i,
     
     'SteelSeries Rival 100',
@@ -28,7 +31,8 @@ let database = {
     
     'Microsoft Bluetooth Mouse',
     
-    'Razer DeathAdder',
+	/Razer DeathAdder/i,
+	/Razer Basilisk/i,
 
     /Sony MDR-?ZX310AP\s/i,
 
@@ -56,30 +60,18 @@ let database = {
     /^NETGEAR Nighthawk/i,
     
     // broad range
-    'Holife',
-    'PASONOMI',
-    'TOPELEK',
-    'Anker',
-    'AmazonBasics',
-    'EasyULT',
-    'VicTsing',
-    'UtechSmart',
-    /^JAMSWALL/i,
+    /^Anker/i,
+    /^AmazonBasics/i,
     /^Xiaomi/i,
     /^OPPO/i,
     /^POCO/i,
     /^OnePlus^/i,
     /^Huawei/i,
-    /^Soundcore/i,
-    /^OneOdio/i,
     /^JBL/i, // unsure
     /^AUKEY/i, // unsure
     /^TP\-Link/i,
     /^ZTE/i,
     /^DJI/i,
-    /^LeadsaiL/i,
-    /^Speedlink/i,
-    /^Jelly Comb/i,
     /^Hisense/i,
     /^Fiio/i,
     /^Lenovo/i,
@@ -91,6 +83,7 @@ let database = {
     /^Ubiquiti/i, // unsure
     /^AOC/i, // owned by TPV technology,
     /^TCL/i,
+    /^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion)\s/i, // whitelabel
   ],
   'taiwan': [
     'SteelSeries QcK',
@@ -182,6 +175,8 @@ function applyFlag( baseElement, titleElement ){
   flag.style.display = "inline-block";
   flag.style.marginRight = "3px";
   flag.style.fontSize = "1em";
+  // flag.style.fontFamily = "Twitter Color Emoji, Arial";
+  flag.style.letterSpacing = 0;
   titleElement.prepend(flag);
 
   if( flag_string == "china" ){
@@ -212,54 +207,76 @@ for( let title of titles ){
 
 function runScript(){
 
-  let searchResults = document.querySelectorAll("div.s-result-item");
-  if( searchResults ){
-    for( let element of searchResults ){
-      let title = element.querySelector("span.a-size-medium");
-      if(title) applyFlag(element, title);
-    }
-  }
+	let url = location.href;
 
-  let octopus = document.querySelectorAll("li.octopus-pc-item");
-  if( octopus ){
-    for( let element of octopus ){
-      let title = element.querySelector("div.octopus-pc-asin-title");
-      if(title) applyFlag(element, title);
-    }
-  }
+	if( url.indexOf("amazon") !== -1 ){
 
-  let resultList = document.querySelectorAll("li.s-result-item");
-  if( resultList ){
-    for( let element of resultList ){
-      let title = element.querySelector("h2.s-access-title");
-      if(title) applyFlag(element, title);
-    }
-  }
+		let searchResults = document.querySelectorAll("div.s-result-item");
+		if( searchResults ){
+			for( let element of searchResults ){
+				let title = element.querySelector("span.a-size-medium");
+				if(title) applyFlag(element, title);
+			}
+		}
 
-  let historyBoxes = document.querySelectorAll("div.asin_container");
-  if( historyBoxes ){
-    for( let element of historyBoxes ){
-      let title = element.querySelector("div.p13n-sc-truncated");
-      if(title) applyFlag(element, title);
-    }
-  }
+		let octopus = document.querySelectorAll("li.octopus-pc-item");
+		if( octopus ){
+			for( let element of octopus ){
+				let title = element.querySelector("div.octopus-pc-asin-title");
+				if(title) applyFlag(element, title);
+			}
+		}
 
-  let carouselContainers = document.querySelectorAll("ol.a-carousel");
-  if( carouselContainers ){
-    for( let element of carouselContainers ){
-      let carouselCards = element.querySelectorAll("li.a-carousel-card");
-      for( let card of carouselCards ){
-        let title = card.querySelector("span.a-text-normal, div.sponsored-products-truncator-truncated, div.p13n-sc-truncated");
-        if(title) applyFlag(card, title);
-      }
-    }
-  }
+		let resultList = document.querySelectorAll("li.s-result-item");
+		if( resultList ){
+			for( let element of resultList ){
+				let title = element.querySelector("h2.s-access-title");
+				if(title) applyFlag(element, title);
+			}
+		}
 
-  let productPage = document.querySelector("#ppd");
-  if( productPage ){
-    let title = productPage.querySelector("#productTitle");
-    if(title) applyFlag(productPage, title);
-  }
+		let historyBoxes = document.querySelectorAll("div.asin_container");
+		if( historyBoxes ){
+			for( let element of historyBoxes ){
+				let title = element.querySelector("div.p13n-sc-truncated");
+				if(title) applyFlag(element, title);
+			}
+		}
+
+		let carouselContainers = document.querySelectorAll("ol.a-carousel");
+		if( carouselContainers ){
+			for( let element of carouselContainers ){
+				let carouselCards = element.querySelectorAll("li.a-carousel-card");
+				for( let card of carouselCards ){
+					let title = card.querySelector("span.a-text-normal, div.sponsored-products-truncator-truncated, div.p13n-sc-truncated");
+					if(title) applyFlag(card, title);
+				}
+			}
+		}
+
+		let productPage = document.querySelector("#ppd");
+		if( productPage ){
+			let title = productPage.querySelector("#productTitle");
+			if(title) applyFlag(productPage, title);
+		}
+
+	}
+
+	if( url.indexOf("inet") !== -1 ){
+		
+		let results = document.querySelectorAll("div.product-list ul li");
+		for( let element of results ){
+			let title = element.querySelector("h4");
+			if(title) applyFlag(element, title);
+		}
+		
+		let productPage = document.querySelector("article.product-page");
+		if( productPage ){
+			let title = productPage.querySelector("header h1");
+			if(title) applyFlag(productPage, title);
+		}
+
+	}
 
 }
 
