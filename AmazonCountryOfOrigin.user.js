@@ -9,7 +9,7 @@
 // @match       https://www.prisjakt.nu/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.07
+// @version     1.08
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -88,6 +88,7 @@ let database = {
 		/^AOC/i, // owned by TPV technology,
 		/^TCL/i,
 		/^Andersson/i, // netonnet
+		/^Divoom/i,
 		/^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion)\s/i, // whitelabel
 	],
   	'taiwan': [
@@ -228,7 +229,7 @@ class Amazon extends CountryOfOrigin {
 		if( octopus ){
 			for( let element of octopus ){
 				let title = element.querySelector("div.octopus-pc-asin-title");
-				if(title) this.applyFlag(element, title);
+				if(title) this.applyFlag(element, title, "octopus");
 			}
 		}
 
@@ -265,6 +266,12 @@ class Amazon extends CountryOfOrigin {
 			if(title) this.applyFlag(productPage, title);
 		}
 	}
+
+	applyWarning( titleElement, baseElement, source ){
+		titleElement.style.color = "#f00";
+		baseElement.style.backgroundColor = '#fdb1b1';
+		if( source == "octopus" ) baseElement.querySelector("div.octopus-pc-asin-info-section").style.backgroundColor = this.warningBackground;
+	}	
 	
 }
 
@@ -344,21 +351,21 @@ class Prisjakt extends CountryOfOrigin {
 
 let coc;
 
-let url = location.href;
+let url = window.location.hostname;
 
-if( url.indexOf("netonnet.se") !== -1 ){
-	 coc = new NetOnNet();
+if( url == "www.netonnet.se" ){
+	coc = new NetOnNet();
 }
 
-if( url.indexOf("inet.se") !== -1 ){
+if( url == "www.inet.se" ){
 	coc = new Inet();
 }
 
-if( url.indexOf("amazon.") !== -1 ){
+if( url.startsWith("www.amazon.") ){
 	coc = new Amazon();
 }
 
-if( url.indexOf("prisjakt.") !== -1 ){
+if( url == "www.prisjakt.nu" ){
 	coc = new Prisjakt();
 }
 
