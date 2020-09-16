@@ -83,7 +83,8 @@ let database = {
     /^Roku/i, // assembled in china
     /^Ubiquiti/i, // unsure
     /^AOC/i, // owned by TPV technology,
-    /^TCL/i,
+	/^TCL/i,
+	/^Andersson/i, // netonnet
     /^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion)\s/i, // whitelabel
   ],
   'taiwan': [
@@ -139,84 +140,76 @@ let flags = {
   "multiple": "❗",
 };
 
-function applyFlag( baseElement, titleElement ){
+class CountryOfOrigin {
 
-  console.debug("apply flag", baseElement, titleElement);
+	applyFlag( baseElement, titleElement ){
 
-  if(baseElement.applied){
-    console.debug("already applied", baseElement);
-    return;
-  }
+		console.debug("apply flag", baseElement, titleElement);
+	  
+		if(baseElement.applied){
+		  console.debug("already applied", baseElement);
+		  return;
+		}
+	  
+		let found = false;
+		let flag_string = "";
+	  
+		let text = titleElement.innerText.toLowerCase().trim();
+	  
+		if( text.substring(0, 1) == "€" || text.substring(0, 1) == "$" ) return;
+	  
+		console.debug( titleElement, text );
+	  
+		for( let country in database){
+		  let products = database[country];
+		  for( let product of products){
+			if( typeof product == "string" ? ( text.indexOf(product.toLowerCase()) !== -1 ) : ( text.match(product) ) ){
+			  console.log("found", text, country);
+			  found = true;
+			  flag_string = country;
+			  break;
+			}
+		  }
+		}
+	  
+		let flag = document.createElement("span");
+		flag.className = "flag";
+		flag.innerHTML = flag_string ? flags[flag_string] : "❓";
+		flag.title = flag_string;
+		flag.style.display = "inline-block";
+		flag.style.marginRight = "3px";
+		flag.style.fontSize = "1em";
+		// flag.style.fontFamily = "Twitter Color Emoji, Arial";
+		flag.style.letterSpacing = 0;
+		titleElement.prepend(flag);
+	  
+		if( flag_string == "china" ){
+		  titleElement.style.color = "#f00";
+		  baseElement.style.backgroundColor = '#fdb1b1';
+		}
+	  
+		baseElement.applied = true;
+	  
+	}
 
-  let found = false;
-  let flag_string = "";
-
-  let text = titleElement.innerText.toLowerCase().trim();
-
-  if( text.substring(0, 1) == "€" || text.substring(0, 1) == "$" ) return;
-
-  console.debug( titleElement, text );
-
-  for( let country in database){
-    let products = database[country];
-    for( let product of products){
-      if( typeof product == "string" ? ( text.indexOf(product.toLowerCase()) !== -1 ) : ( text.match(product) ) ){
-        console.log("found", text, country);
-        found = true;
-        flag_string = country;
-        break;
-      }
-    }
-  }
-
-  let flag = document.createElement("span");
-  flag.className = "flag";
-  flag.innerHTML = flag_string ? flags[flag_string] : "❓";
-  flag.title = flag_string;
-  flag.style.display = "inline-block";
-  flag.style.marginRight = "3px";
-  flag.style.fontSize = "1em";
-  // flag.style.fontFamily = "Twitter Color Emoji, Arial";
-  flag.style.letterSpacing = 0;
-  titleElement.prepend(flag);
-
-  if( flag_string == "china" ){
-    titleElement.style.color = "#f00";
-    baseElement.style.backgroundColor = '#fdb1b1';
-  }
-
-  baseElement.applied = true;
+	runScript(){
+		console.error("No site");	
+	}
 
 }
 
-let isProductPage = location.href.match("/dp/");
+class Amazon extends CountryOfOrigin {
 
-/*
-let titles;
+	constructor(){
+		super();
+	}
 
-if( isProductPage ){
-  titles = document.querySelectorAll("#productTitle");
-}else{
-  titles = document.querySelectorAll("span.a-size-medium, span.a-text-normal, h2.s-access-title, #productTitle");
-}
-
-for( let title of titles ){
-  console.debug("Titles");
-  applyFlag(title);
-}
-*/
-
-function runScript(){
-
-	let url = location.href;
-
-	if( url.indexOf("amazon") !== -1 ){
-
+	runScript(){
 		let searchResults = document.querySelectorAll("div.s-result-item");
 		if( searchResults ){
 			for( let element of searchResults ){
 				let title = element.querySelector("span.a-size-medium");
-				if(title) applyFlag(element, title);
+				if(title) this.applyFlag(element, title);
 			}
 		}
 
@@ -224,7 +217,7 @@ function runScript(){
 		if( octopus ){
 			for( let element of octopus ){
 				let title = element.querySelector("div.octopus-pc-asin-title");
-				if(title) applyFlag(element, title);
+				if(title) this.applyFlag(element, title);
 			}
 		}
 
@@ -232,7 +225,7 @@ function runScript(){
 		if( resultList ){
 			for( let element of resultList ){
 				let title = element.querySelector("h2.s-access-title");
-				if(title) applyFlag(element, title);
+				if(title) this.applyFlag(element, title);
 			}
 		}
 
@@ -240,7 +233,7 @@ function runScript(){
 		if( historyBoxes ){
 			for( let element of historyBoxes ){
 				let title = element.querySelector("div.p13n-sc-truncated");
-				if(title) applyFlag(element, title);
+				if(title) this.applyFlag(element, title);
 			}
 		}
 
@@ -250,7 +243,7 @@ function runScript(){
 				let carouselCards = element.querySelectorAll("li.a-carousel-card");
 				for( let card of carouselCards ){
 					let title = card.querySelector("span.a-text-normal, div.sponsored-products-truncator-truncated, div.p13n-sc-truncated");
-					if(title) applyFlag(card, title);
+					if(title) this.applyFlag(card, title);
 				}
 			}
 		}
@@ -258,64 +251,75 @@ function runScript(){
 		let productPage = document.querySelector("#ppd");
 		if( productPage ){
 			let title = productPage.querySelector("#productTitle");
-			if(title) applyFlag(productPage, title);
+			if(title) this.applyFlag(productPage, title);
 		}
+	}
+	
+}
 
+class Inet extends CountryOfOrigin {
+
+	constructor(){
+		super();
 	}
 
-	if( url.indexOf("inet.se") !== -1 ){
-		
+	runScript(){
 		let results = document.querySelectorAll("div.product-list ul li");
 		for( let element of results ){
 			let title = element.querySelector("h4");
-			if(title) applyFlag(element, title);
+			if(title) this.applyFlag(element, title);
 		}
 		
 		let productPage = document.querySelector("article.product-page");
 		if( productPage ){
 			let title = productPage.querySelector("header h1");
-			if(title) applyFlag(productPage, title);
+			if(title) this.applyFlag(productPage, title);
 		}
-
 	}
 
-	if( url.indexOf("netonnet.se") !== -1 ){
-		
+}
+
+class NetOnNet extends CountryOfOrigin {
+
+	constructor(){
+		super();
+	}
+
+	runScript(){
 		let results = document.querySelectorAll("div.cProductItem");
 		for( let element of results ){
 			let title = element.querySelector("div.panel-body div.subTitle");
-			if(title) applyFlag(element, title);
+			if(title) this.applyFlag(element, title);
 		}
 		
 		let productPage = document.querySelector("article.product-page");
 		if( productPage ){
 			let title = productPage.querySelector("header h1");
-			if(title) applyFlag(productPage, title);
+			if(title) this.applyFlag(productPage, title);
 		}
-
 	}
 
 }
 
-runScript();
+let coc;
 
-setInterval(runScript, 5000); // find a better way to do this
+let url = location.href;
 
-
-/*
-let comparisonTitles = document.querySelectorAll("th.comparison_image_title_cell span.a-size-base");
-if( comparisonTitles ){
-  for( let title of comparisonTitles ){
-    console.debug("Comparison titles");
-    applyFlag(title);
-  }
+if( url.indexOf("netonnet.se") !== -1 ){
+	 coc = new NetOnNet();
 }
 
-let alsoViewedTitles = document.querySelectorAll("li.a-carousel-card div.p13n-sc-truncate-mobile-type");
-if( alsoViewedTitles ){
-  for( let title of alsoViewedTitles ){
-    console.debug("Also viewed titles");
-    applyFlag(title);
-  }
+if( url.indexOf("inet.se") !== -1 ){
+	coc = new Inet();
 }
-*/
+
+if( url.indexOf("amazon.") !== -1 ){
+	coc = new Amazon();
+}
+
+if( coc ){
+	coc.runScript();
+	setInterval(coc.runScript.bind(coc), 5000); // find a better way to do this
+}else{
+	console.error("No site found");
+}
