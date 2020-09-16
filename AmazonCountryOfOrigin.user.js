@@ -14,120 +14,120 @@
 // ==/UserScript==
 
 let database = {
-  'china': [
-    /^Logitech M185/i,
-    /^Logitech M187/i,
-    /^Logitech M100/i,
-    /^Logitech B100/i,
-	/^Logitech M705/i,
-	/^Logitech G203/i,
-    /^Logitech MX Ergo/i,
-    /^Logitech MX Master/i,
-	/^Logitech K280e/i,
-	/^Logitech G PRO/i,
-    
-    'SteelSeries Rival 100',
-    'SteelSeries Rival 310',
-    
-    'Apple Magic Mouse 2',
-    
-    'Microsoft Bluetooth Mouse',
-    
-	/Razer DeathAdder/i,
-	/Razer Basilisk/i,
+	'china': [
+		/^Logitech M185/i,
+		/^Logitech M187/i,
+		/^Logitech M100/i,
+		/^Logitech B100/i,
+		/^Logitech M705/i,
+		/^Logitech G203/i,
+		/^Logitech MX Ergo/i,
+		/^Logitech MX Master/i,
+		/^Logitech K280e/i,
+		/^Logitech G PRO/i,
+		
+		'SteelSeries Rival 100',
+		'SteelSeries Rival 310',
+		
+		'Apple Magic Mouse 2',
+		
+		'Microsoft Bluetooth Mouse',
+		
+		/Razer DeathAdder/i,
+		/Razer Basilisk/i,
 
-    /Sony MDR-?ZX310AP\s/i,
+		/Sony MDR-?ZX310AP\s/i,
 
-    /^Motorola One Zoom/i,
+		/^Motorola One Zoom/i,
 
-    /DualShock 4/i,
-    /^xbox one wireless controller/i,
-    /^Xbox Elite Wireless Controller/i,
-    /^Xbox Wireless Controller/i,
-    /^Xbox\s360\sController/i,
-    
-    /Nintendo Switch Pro Controller/i,
+		/DualShock 4/i,
+		/^xbox one wireless controller/i,
+		/^Xbox Elite Wireless Controller/i,
+		/^Xbox Wireless Controller/i,
+		/^Xbox\s360\sController/i,
+		
+		/Nintendo Switch Pro Controller/i,
 
-    /^Apple AirPods/i,
-    /^Apple iPhone/i,
-    /^Apple iPad/i,
-	/^Apple Pencil/i,
-	/^Apple MacBook/i,
+		/^Apple AirPods/i,
+		/^Apple iPhone/i,
+		/^Apple iPad/i,
+		/^Apple Pencil/i,
+		/^Apple MacBook/i,
 
-    /^Samsung Galaxy/i, // charged until proven guilty
+		/^Samsung Galaxy/i, // charged until proven guilty
 
-    /^SanDisk (Ultra|Extreme)/i,
+		/^SanDisk (Ultra|Extreme)/i,
 
-    /^Fujifilm X-T/i,
+		/^Fujifilm X-T/i,
 
-    /^NETGEAR Nighthawk/i,
-    
-    // broad range
-    /^Anker/i,
-    /^AmazonBasics/i,
-    /^Xiaomi/i,
-    /^OPPO/i,
-    /^POCO/i,
-    /^OnePlus^/i,
-    /^Huawei/i,
-    /^JBL/i, // unsure
-    /^AUKEY/i, // unsure
-    /^TP\-Link/i,
-    /^ZTE/i,
-    /^DJI/i,
-    /^Hisense/i,
-    /^Fiio/i,
-    /^Lenovo/i,
-    /^Motorola/i,
-    /^HKC/i,
-    /^HiQuick/i,
-    /^Intenso/i, // unsure
-    /^Roku/i, // assembled in china
-    /^Ubiquiti/i, // unsure
-    /^AOC/i, // owned by TPV technology,
-	/^TCL/i,
-	/^Andersson/i, // netonnet
-    /^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion)\s/i, // whitelabel
-  ],
-  'taiwan': [
-    'SteelSeries QcK',
-    /^Corsair\sVengeance/i,
-    // /^ASUS/i,
-  ],
-  'thailand': [
-    /Sony MDR-?ZX310\s/,
-    'HP Tango',
-    /^(WD|Western Digital) Elements Desktop/i,
-    /^(WD|Western Digital) [0-9]+\s?TB (Elements Desktop|My Cloud)/i,
-    /^(WD|Western Digital) [0-9]+\s?TB /i,
-    /^(WD|Western Digital) Red Internal/i,
-    /^(WD|Western Digital) Blue/i,
-    /^My Book Desktop/i,
-    /^Seagate BarraCuda/i,
-  ],
-  'korea': [
-    /^Nvidia Shield.?\s?(Android)?\s?TV/i,
-    /^Samsung ([0-9]+) EVO/i,
-  ],
-  'vietnam': [
-    /Korg TM-?60/i,
-    /^Google Nest/i,
-  ],
-  'indonesia': [
+		/^NETGEAR Nighthawk/i,
+		
+		// broad range
+		/^Anker/i,
+		/^AmazonBasics/i,
+		/^Xiaomi/i,
+		/^OPPO/i,
+		/^POCO/i,
+		/^OnePlus^/i,
+		/^Huawei/i,
+		/^JBL/i, // unsure
+		/^AUKEY/i, // unsure
+		/^TP\-Link/i,
+		/^ZTE/i,
+		/^DJI/i,
+		/^Hisense/i,
+		/^Fiio/i,
+		/^Lenovo/i,
+		/^Motorola/i,
+		/^HKC/i,
+		/^HiQuick/i,
+		/^Intenso/i, // unsure
+		/^Roku/i, // assembled in china
+		/^Ubiquiti/i, // unsure
+		/^AOC/i, // owned by TPV technology,
+		/^TCL/i,
+		/^Andersson/i, // netonnet
+		/^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion)\s/i, // whitelabel
+	],
+  	'taiwan': [
+		'SteelSeries QcK',
+		/^Corsair\sVengeance/i,
+		// /^ASUS/i,
+  	],
+  	'thailand': [
+		/Sony MDR-?ZX310\s/,
+		'HP Tango',
+		/^(WD|Western Digital) Elements Desktop/i,
+		/^(WD|Western Digital) [0-9]+\s?TB (Elements Desktop|My Cloud)/i,
+		/^(WD|Western Digital) [0-9]+\s?TB /i,
+		/^(WD|Western Digital) Red Internal/i,
+		/^(WD|Western Digital) (Blue|Red|Black|Gold)/i,
+		/^My Book Desktop/i,
+		/^Seagate (BarraCuda|IronWolf|FireCuda)/i,
+  	],
+  	'korea': [
+    	/^Nvidia Shield.?\s?(Android)?\s?TV/i,
+    	/^Samsung ([0-9]+) EVO/i,
+  	],
+  	'vietnam': [
+    	/Korg TM-?60/i,
+    	/^Google Nest/i,
+  	],
+  	'indonesia': [
 
-  ],
-  'malaysia': [
-    /^(WD|Western Digital) Elements (Portable|External)/i,
-    /^(WD|Western Digital) My Passport/i,
-    /^AMD Ryzen/i,
-  ],
-  'uk': [
-    /^Raspberry\sPi\s4/i,
-  ],
-  'multiple': [
-    /^Varta/i,
-    /^Samsung (Electronics)? EVO Select/i,
-  ]
+  	],
+  	'malaysia': [
+    	/^(WD|Western Digital) Elements (Portable|External)/i,
+    	/^(WD|Western Digital) My Passport/i,
+    	/^AMD Ryzen/i,
+  	],
+  	'uk': [
+    	/^Raspberry\sPi\s4/i,
+  	],
+  	'multiple': [
+    	/^Varta/i,
+    	/^Samsung (Electronics)? EVO Select/i,
+  	]
 };
 
 let flags = {
