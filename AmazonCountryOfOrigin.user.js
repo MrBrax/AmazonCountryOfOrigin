@@ -142,6 +142,10 @@ let flags = {
 
 class CountryOfOrigin {
 
+	constructor(){
+		this.warningBackground = '#fdb1b1';
+	}
+
 	applyFlag( baseElement, titleElement ){
 
 		console.debug("apply flag", baseElement, titleElement);
@@ -184,12 +188,16 @@ class CountryOfOrigin {
 		titleElement.prepend(flag);
 	  
 		if( flag_string == "china" ){
-		  titleElement.style.color = "#f00";
-		  baseElement.style.backgroundColor = '#fdb1b1';
+			this.applyWarning( titleElement, baseElement );
 		}
 	  
 		baseElement.applied = true;
 	  
+	}
+
+	applyWarning( titleElement, baseElement ){
+		titleElement.style.color = "#f00";
+		baseElement.style.backgroundColor = '#fdb1b1';
 	}
 
 	runScript(){
@@ -292,11 +300,18 @@ class NetOnNet extends CountryOfOrigin {
 			if(title) this.applyFlag(element, title);
 		}
 		
-		let productPage = document.querySelector("article.product-page");
+		let productPage = document.querySelector("div.product-leftInfo");
 		if( productPage ){
-			let title = productPage.querySelector("header h1");
+			let title = productPage.querySelector("div.subTitle h1");
 			if(title) this.applyFlag(productPage, title);
 		}
+	}
+
+	applyWarning( titleElement, baseElement ){
+		titleElement.style.color = "#f00";
+		baseElement.style.backgroundColor = this.warningBackground;
+		baseElement.querySelector("div.panel").style.backgroundColor = this.warningBackground;
+		baseElement.querySelector("div.footer").style.backgroundColor = this.warningBackground;
 	}
 
 }
