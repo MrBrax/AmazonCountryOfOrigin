@@ -5,9 +5,10 @@
 // @match       https://www.amazon.com/*
 // @match       https://www.amazon.co.uk/*
 // @match       https://www.inet.se/*
+// @match       https://www.netonnet.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.05
+// @version     1.06
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -262,11 +263,27 @@ function runScript(){
 
 	}
 
-	if( url.indexOf("inet") !== -1 ){
+	if( url.indexOf("inet.se") !== -1 ){
 		
 		let results = document.querySelectorAll("div.product-list ul li");
 		for( let element of results ){
 			let title = element.querySelector("h4");
+			if(title) applyFlag(element, title);
+		}
+		
+		let productPage = document.querySelector("article.product-page");
+		if( productPage ){
+			let title = productPage.querySelector("header h1");
+			if(title) applyFlag(productPage, title);
+		}
+
+	}
+
+	if( url.indexOf("netonnet.se") !== -1 ){
+		
+		let results = document.querySelectorAll("div.cProductItem");
+		for( let element of results ){
+			let title = element.querySelector("div.panel-body div.subTitle");
 			if(title) applyFlag(element, title);
 		}
 		
