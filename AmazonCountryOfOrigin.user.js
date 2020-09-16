@@ -6,6 +6,7 @@
 // @match       https://www.amazon.co.uk/*
 // @match       https://www.inet.se/*
 // @match       https://www.netonnet.se/*
+// @match       https://www.prisjakt.nu/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
 // @version     1.07
@@ -131,15 +132,15 @@ let database = {
 };
 
 let flags = {
-  "china": "🇨🇳",
-  "taiwan": "🇹🇼",
-  "thailand": "🇹🇭",
-  "korea": "🇰🇷",
-  "vietnam": "🇻🇳",
-  "indonesia": "🇮🇩",
-  "malaysia": "🇲🇾",
-  "uk": "🇬🇧",
-  "multiple": "❗",
+	"china": "🇨🇳",
+	"taiwan": "🇹🇼",
+	"thailand": "🇹🇭",
+	"korea": "🇰🇷",
+	"vietnam": "🇻🇳",
+	"indonesia": "🇮🇩",
+	"malaysia": "🇲🇾",
+	"uk": "🇬🇧",
+	"multiple": "❗",
 };
 
 class CountryOfOrigin {
@@ -318,6 +319,29 @@ class NetOnNet extends CountryOfOrigin {
 
 }
 
+class Prisjakt extends CountryOfOrigin {
+
+	constructor(){
+		super();
+	}
+
+	runScript(){
+		let results = document.querySelectorAll("tr.Tr-sc-1stvbsu-1");
+		console.log("Found " + results.length + " results");
+		for( let element of results ){
+			let title = element.querySelector("h3");
+			if(title) this.applyFlag(element, title);
+		}
+		
+		let productPage = document.querySelector("div.product-leftInfo");
+		if( productPage ){
+			let title = productPage.querySelector("div.subTitle h1");
+			if(title) this.applyFlag(productPage, title);
+		}
+	}
+
+}
+
 let coc;
 
 let url = location.href;
@@ -332,6 +356,10 @@ if( url.indexOf("inet.se") !== -1 ){
 
 if( url.indexOf("amazon.") !== -1 ){
 	coc = new Amazon();
+}
+
+if( url.indexOf("prisjakt.") !== -1 ){
+	coc = new Prisjakt();
 }
 
 if( coc ){
