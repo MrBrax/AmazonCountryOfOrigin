@@ -10,23 +10,25 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.09
+// @version     1.10
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
 
 let database = {
 	'china': [
-		/^Logitech (M185|M187|M100|B100|M705|G203|MX Ergo|MX Master|K280e|G PRO)/i,
-		
-		/^SteelSeries Rival (100|310)/i,
-		
-		'Microsoft Bluetooth Mouse',
-		
-		/Razer DeathAdder/i,
-		/Razer Basilisk/i,
 
+		// mice
+		/^Logitech (M90|M185|M187|M100|B100|B220|M235|M310|M325|M705|M570|G203|MX Ergo|MX Master|K280e|G PRO)/i,
+		/^SteelSeries Rival (100|310|650|710|3\s)/i,
+		/^Microsoft Bluetooth Mouse/i,
+		/^Svive Proteus 3360/i,
+		/^ASUS ROG (PUGIO II|Gladius II)/i,
+		/^Razer (DeathAdder|Viper|Basilisk|Mamba Elite)/i,
+		/^HyperX (Pulsefire Surge|Pulsefire Dart)/i,
+		/^Corsair Gaming (Harpoon|Dark Core)/i,
 		/^iiglo (M310|M320WL)/i,
+		/^ROCCAT Kain 120/i,
 
 		/Sony MDR-?ZX310AP\s/i,
 
