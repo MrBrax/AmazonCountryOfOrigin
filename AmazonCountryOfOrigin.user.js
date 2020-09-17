@@ -7,35 +7,26 @@
 // @match       https://www.inet.se/*
 // @match       https://www.netonnet.se/*
 // @match       https://www.prisjakt.nu/*
+// @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.08
+// @version     1.09
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
 
 let database = {
 	'china': [
-		/^Logitech M185/i,
-		/^Logitech M187/i,
-		/^Logitech M100/i,
-		/^Logitech B100/i,
-		/^Logitech M705/i,
-		/^Logitech G203/i,
-		/^Logitech MX Ergo/i,
-		/^Logitech MX Master/i,
-		/^Logitech K280e/i,
-		/^Logitech G PRO/i,
+		/^Logitech (M185|M187|M100|B100|M705|G203|MX Ergo|MX Master|K280e|G PRO)/i,
 		
-		'SteelSeries Rival 100',
-		'SteelSeries Rival 310',
-		
-		'Apple Magic Mouse 2',
+		/^SteelSeries Rival (100|310)/i,
 		
 		'Microsoft Bluetooth Mouse',
 		
 		/Razer DeathAdder/i,
 		/Razer Basilisk/i,
+
+		/^iiglo (M310|M320WL)/i,
 
 		/Sony MDR-?ZX310AP\s/i,
 
@@ -54,6 +45,8 @@ let database = {
 		/^Apple iPad/i,
 		/^Apple Pencil/i,
 		/^Apple MacBook/i,
+		/^Apple Magic Trackpad/i,
+		/^Apple Magic Mouse 2/i,
 
 		/^Samsung Galaxy/i, // charged until proven guilty
 
@@ -297,6 +290,28 @@ class Inet extends CountryOfOrigin {
 
 }
 
+class Komplett extends CountryOfOrigin {
+
+	constructor(){
+		super();
+	}
+
+	runScript(){
+		let results = document.querySelectorAll("div.product-list-item");
+		for( let element of results ){
+			let title = element.querySelector("div.text-content h2");
+			if(title) this.applyFlag(element, title);
+		}
+		
+		let productPage = document.querySelector("div.product-page");
+		if( productPage ){
+			let title = productPage.querySelector("h1.product-main-info-webtext1");
+			if(title) this.applyFlag(productPage, title);
+		}
+	}
+
+}
+
 class NetOnNet extends CountryOfOrigin {
 
 	constructor(){
@@ -367,6 +382,10 @@ if( url.startsWith("www.amazon.") ){
 
 if( url == "www.prisjakt.nu" ){
 	coc = new Prisjakt();
+}
+
+if( url == "www.komplett.se" ){
+	coc = new Komplett();
 }
 
 if( coc ){
