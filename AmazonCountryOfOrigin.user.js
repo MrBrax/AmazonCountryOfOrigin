@@ -10,7 +10,7 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.11
+// @version     1.12
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -23,10 +23,11 @@ let database = {
 		// mice
 		/^Logitech (M90|M185|M187|M100|B100|B220|M235|M310|M325|M705|M570|G203|MX Ergo|MX Master|K280e|G PRO)/i,
 		/^SteelSeries Rival (100|310|650|710|3\s)/i,
+		/^SteelSeries Sensei Ten/i,
 		/^Microsoft (Bluetooth Mouse|Pro IntelliMouse)/i,
 		/^Svive Proteus 3360/i,
 		/^ASUS ROG (PUGIO II|Gladius II)/i,
-		/^Razer (DeathAdder|Viper|Basilisk|Mamba Elite)/i,
+		/^Razer (Basilisk|Mamba Elite)/i,
 		/^HyperX (Pulsefire Surge|Pulsefire Dart)/i,
 		/^Corsair Gaming (Harpoon|Dark Core)/i,
 		/^iiglo (M310|M320WL)/i,
@@ -125,7 +126,8 @@ let database = {
   	],
   	'multiple': [
     	/^Varta/i,
-    	/^Samsung (Electronics)? EVO Select/i,
+		/^Samsung (Electronics)? EVO Select/i,
+		/^Razer (Viper|Deathadder)/i,
   	]
 };
 
@@ -399,6 +401,16 @@ if( coc ){
 
 	window.addEventListener('urlchange', (info) => {
 		console.debug("url changed", info);
+		coc.runScript();
+	});
+
+	window.addEventListener('popstate', (info) => {
+		console.debug("popstate", info);
+		coc.runScript();
+	});
+
+	window.addEventListener('hashchange', (info) => {
+		console.debug("hash changed", info);
 		coc.runScript();
 	});
 	
