@@ -10,10 +10,12 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.10
+// @version     1.11
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
+
+let hideEntries = false;
 
 let database = {
 	'china': [
@@ -21,7 +23,7 @@ let database = {
 		// mice
 		/^Logitech (M90|M185|M187|M100|B100|B220|M235|M310|M325|M705|M570|G203|MX Ergo|MX Master|K280e|G PRO)/i,
 		/^SteelSeries Rival (100|310|650|710|3\s)/i,
-		/^Microsoft Bluetooth Mouse/i,
+		/^Microsoft (Bluetooth Mouse|Pro IntelliMouse)/i,
 		/^Svive Proteus 3360/i,
 		/^ASUS ROG (PUGIO II|Gladius II)/i,
 		/^Razer (DeathAdder|Viper|Basilisk|Mamba Elite)/i,
@@ -89,7 +91,7 @@ let database = {
   	'taiwan': [
 		'SteelSeries QcK',
 		/^Corsair\sVengeance/i,
-		// /^ASUS/i,
+		/^Razer Naga Trinity/i, // unsure
   	],
   	'thailand': [
 		/Sony MDR-?ZX310\s/,
@@ -149,9 +151,9 @@ class CountryOfOrigin {
 
 		// console.debug("apply flag", baseElement, titleElement);
 	  
-		if(baseElement.applied){
-		  // console.debug("already applied", baseElement);
-		  return;
+		if( baseElement.querySelector("span.flag") ){
+			// console.debug("already applied", baseElement);
+			return;
 		}
 	  
 		let found = false;
@@ -161,7 +163,7 @@ class CountryOfOrigin {
 	  
 		if( text.substring(0, 1) == "€" || text.substring(0, 1) == "$" ) return;
 	  
-		// console.debug( titleElement, text );
+		console.debug( baseElement, titleElement, text );
 	  
 		for( let country in database){
 			let products = database[country];
@@ -187,6 +189,7 @@ class CountryOfOrigin {
 		titleElement.prepend(flag);
 	  
 		if( flag_string == "china" ){
+			if( hideEntries ) baseElement.style.display = "none";
 			this.applyWarning( titleElement, baseElement );
 		}
 	  
@@ -357,9 +360,9 @@ class Prisjakt extends CountryOfOrigin {
 			if(title) this.applyFlag(element, title);
 		}
 		
-		let productPage = document.querySelector("div.product-leftInfo");
+		let productPage = document.querySelector("header.product-header");
 		if( productPage ){
-			let title = productPage.querySelector("div.subTitle h1");
+			let title = productPage.querySelector("div.product-header--content h1");
 			if(title) this.applyFlag(productPage, title);
 		}
 	}
@@ -393,6 +396,12 @@ if( url == "www.komplett.se" ){
 if( coc ){
 	coc.runScript();
 	setInterval(coc.runScript.bind(coc), 5000); // find a better way to do this
+
+	window.addEventListener('urlchange', (info) => {
+		console.debug("url changed", info);
+		coc.runScript();
+	});
+	
 }else{
 	console.error("No site found");
 }
