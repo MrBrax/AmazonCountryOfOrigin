@@ -10,7 +10,7 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.12
+// @version     1.13
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -39,7 +39,8 @@ let database = {
 
 		/DualShock 4/i,
 		/^xbox one wireless controller/i,
-		/^Xbox Elite Wireless Controller/i,
+    /^(Microsoft\s)?Xbox Elite Wireless Controller/i,
+    /^Microsoft Xbox One Elite Controller/i,
 		/^Xbox Wireless Controller/i,
 		/^Xbox\s360\sController/i,
 		
@@ -86,8 +87,9 @@ let database = {
 		/^AOC/i, // owned by TPV technology,
 		/^TCL/i,
 		/^Andersson/i, // netonnet
-		/^Divoom/i,
-		/^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion)\s/i, // whitelabel
+    /^Divoom/i,
+    /^8Bitdo/i,
+		/^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion|EasySMX|BIMONK|Gezimetie|PowerLead|ipega)\s/i, // whitelabel
 	],
   	'taiwan': [
 		'SteelSeries QcK',
