@@ -10,7 +10,7 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.13
+// @version     1.14
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -39,8 +39,8 @@ let database = {
 
 		/DualShock 4/i,
 		/^xbox one wireless controller/i,
-    /^(Microsoft\s)?Xbox Elite Wireless Controller/i,
-    /^Microsoft Xbox One Elite Controller/i,
+		/^(Microsoft\s)?Xbox Elite Wireless Controller/i,
+		/^Microsoft Xbox One Elite Controller/i,
 		/^Xbox Wireless Controller/i,
 		/^Xbox\s360\sController/i,
 		
@@ -53,6 +53,9 @@ let database = {
 		/^Apple MacBook/i,
 		/^Apple Magic Trackpad/i,
 		/^Apple Magic Mouse 2/i,
+
+		// phones
+		/^Sony Xperia 5 II/i,
 
 		/^Samsung Galaxy/i, // charged until proven guilty
 
@@ -68,7 +71,7 @@ let database = {
 		/^Xiaomi/i,
 		/^OPPO/i,
 		/^POCO/i,
-		/^OnePlus^/i,
+		/^OnePlus/i,
 		/^Huawei/i,
 		/^JBL/i, // unsure
 		/^AUKEY/i, // unsure
@@ -87,8 +90,8 @@ let database = {
 		/^AOC/i, // owned by TPV technology,
 		/^TCL/i,
 		/^Andersson/i, // netonnet
-    /^Divoom/i,
-    /^8Bitdo/i,
+    	/^Divoom/i,
+   		/^8Bitdo/i,
 		/^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion|EasySMX|BIMONK|Gezimetie|PowerLead|ipega)\s/i, // whitelabel
 	],
   	'taiwan': [
