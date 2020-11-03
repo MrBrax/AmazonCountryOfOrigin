@@ -39,12 +39,14 @@ let database = {
 
 		/DualShock 4/i,
 		/^xbox one wireless controller/i,
-    /^(Microsoft\s)?Xbox Elite Wireless Controller/i,
-    /^Microsoft Xbox One Elite Controller/i,
+		/^(Microsoft\s)?Xbox Elite Wireless Controller/i,
+		/^Microsoft Xbox One Elite Controller/i,
 		/^Xbox Wireless Controller/i,
 		/^Xbox\s360\sController/i,
-		
 		/Nintendo Switch Pro Controller/i,
+
+		// monitors
+		/^LG 27UL850/i,
 
 		/^Apple AirPods/i,
 		/^Apple iPhone/i,
