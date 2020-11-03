@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name        AmazonCountryOfOrigin
 // @namespace   MrBrax
+// @match       https://www.amazon.se/*
 // @match       https://www.amazon.de/*
 // @match       https://www.amazon.com/*
 // @match       https://www.amazon.co.uk/*
@@ -10,7 +11,7 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.14
+// @version     1.15
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -227,7 +228,8 @@ class Amazon extends CountryOfOrigin {
 		let searchResults = document.querySelectorAll("div.s-result-item");
 		if( searchResults ){
 			for( let element of searchResults ){
-				let title = element.querySelector("span.a-size-medium");
+				console.log(element);
+				let title = element.querySelector("span.a-size-medium, span.a-text-normal");
 				if(title) this.applyFlag(element, title);
 			}
 		}
@@ -267,7 +269,7 @@ class Amazon extends CountryOfOrigin {
 			}
 		}
 
-		let productPage = document.querySelector("#ppd");
+		let productPage = document.querySelector("#ppd, #centerCol");
 		if( productPage ){
 			let title = productPage.querySelector("#productTitle");
 			if(title) this.applyFlag(productPage, title);
@@ -384,22 +386,16 @@ let url = window.location.hostname;
 
 if( url == "www.netonnet.se" ){
 	coc = new NetOnNet();
-}
-
-if( url == "www.inet.se" ){
+}else if( url == "www.inet.se" ){
 	coc = new Inet();
-}
-
-if( url.startsWith("www.amazon.") ){
+}else if( url.startsWith("www.amazon.") ){
 	coc = new Amazon();
-}
-
-if( url == "www.prisjakt.nu" ){
+}else if( url == "www.prisjakt.nu" ){
 	coc = new Prisjakt();
-}
-
-if( url == "www.komplett.se" ){
+}else if( url == "www.komplett.se" ){
 	coc = new Komplett();
+}else{
+	console.error("Found no matching site");
 }
 
 if( coc ){
