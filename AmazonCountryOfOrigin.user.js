@@ -11,7 +11,7 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.16
+// @version     1.17
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -37,8 +37,7 @@ let database = {
         // headphones
         /Sony MDR-?ZX310AP\s/i,
 
-        /^Motorola One Zoom/i,
-
+        // controllers
         /DualShock 4/i,
         /^xbox one wireless controller/i,
         /^(Microsoft\s)?Xbox Elite Wireless Controller/i,
@@ -50,6 +49,7 @@ let database = {
         // monitors
         /^LG 27UL850/i,
 
+        // all apple stuff is made in china
         /^Apple AirPods/i,
         /^Apple iPhone/i,
         /^Apple iPad/i,
@@ -60,20 +60,22 @@ let database = {
 
         // phones
         /^Sony Xperia 5 II/i,
+        /^Motorola One Zoom/i,
 
         /^Samsung Galaxy/i, // charged until proven guilty
 
         /^SanDisk (Ultra|Extreme)/i,
 
+        // cameras
         /^Fujifilm X-T/i,
 
         /^NETGEAR Nighthawk/i,
 
         // laptops
         /^Asus VivoBook/i,
-        /^Acer Aspire/i,
-        /^Acer Nitro/i,
-        /^Acer Swift/i,
+        /^Acer (Aspire|Nitro|Swift)/i,
+        /^Aspire (3|5)/i, // acer
+        /^MSI G(L|E|F)/i,
         
         // broad range
         /^Anker/i,
@@ -105,6 +107,8 @@ let database = {
         /^OTL\s/i, // pretty sure - https://www.otltechnologies.com/about
         /^MPOW\s/i,
         /^ENACFIRE/i,
+        /^HONOR/i,
+        /^DoCooler/i,
         /^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion|EasySMX|BIMONK|Gezimetie|PowerLead|ipega)\s/i, // whitelabel
     ],
     'taiwan': [
@@ -146,6 +150,10 @@ let database = {
         /^Varta/i,
         /^Samsung (Electronics)? EVO Select/i,
         /^Razer (Viper|Deathadder)/i,
+    ],
+    'israel': [
+        // carbonation
+        // /^Soda\s?Stream (Spirit|Jet|Power|Genesis|Cool|Crystal)/i,
     ]
 };
 
