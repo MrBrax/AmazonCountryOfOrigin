@@ -11,7 +11,7 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.17
+// @version     1.18
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -36,6 +36,7 @@ let database = {
 
         // headphones
         /Sony MDR-?ZX310AP\s/i,
+        /^Marshall Major III/i,
 
         // controllers
         /DualShock 4/i,
@@ -61,6 +62,7 @@ let database = {
         // phones
         /^Sony Xperia 5 II/i,
         /^Motorola One Zoom/i,
+        /^Nokia 7\.2/i,
 
         /^Samsung Galaxy/i, // charged until proven guilty
 
@@ -73,9 +75,12 @@ let database = {
 
         // laptops
         /^Asus VivoBook/i,
+        /^Asus ZenBook/i,
         /^Acer (Aspire|Nitro|Swift)/i,
-        /^Aspire (3|5)/i, // acer
-        /^MSI G(L|E|F)/i,
+        /^Aspire (3|5|7)/i, // acer
+        /^MSI G(L|E|F|S)([0-9]{2})/i,
+
+        /^Elgato Thunderbolt/i,
         
         // broad range
         /^Anker/i,
@@ -109,9 +114,13 @@ let database = {
         /^ENACFIRE/i,
         /^HONOR/i,
         /^DoCooler/i,
+        // /^Elgato/i, // hong kong
         /^(QueenDer|VOXON|Rii|Jelly Comb|Speedlink|LeadsaiL|OneOdio|Soundcore|JAMSWALL|UtechSmart|VicTsing|EasyULT|TOPELEK|PASONOMI|Holife|AOMEES|CSL|RuoCherg|VOGEK|Teck?Net|Leolee|VAYDEER|Inphic|JETech|TedGem|Idesion|EasySMX|BIMONK|Gezimetie|PowerLead|ipega)\s/i, // whitelabel
     ],
     'taiwan': [
+        /^Elgato Game Capture HD60 PRO/i,
+        /^Elgato Game Capture HD60 S/i,
+        
         'SteelSeries QcK',
         /^Corsair\sVengeance/i,
         /^Razer Naga Trinity/i, // unsure
@@ -134,6 +143,8 @@ let database = {
     'vietnam': [
         /Korg TM-?60/i,
         /^Google Nest/i,
+        /^Google Pixel 4a/i,
+        /^Sony WH-CH510/i, // unsure
     ],
     'indonesia': [
 
@@ -142,6 +153,7 @@ let database = {
         /^(WD|Western Digital) Elements (Portable|External)/i,
         /^(WD|Western Digital) My Passport/i,
         /^AMD Ryzen/i,
+        /^Sony WH-CH510/i, // unsure
     ],
     'uk': [
         /^Raspberry\sPi\s4/i,
@@ -192,31 +204,36 @@ class CountryOfOrigin {
         if( text.substring(0, 1) == "€" || text.substring(0, 1) == "$" ) return;
       
         console.debug( baseElement, titleElement, text );
-      
+
+        let flags_key = [];
+        
         for( let country in database){
             let products = database[country];
             for( let product of products){
                 if( typeof product == "string" ? ( text.indexOf(product.toLowerCase()) !== -1 ) : ( text.match(product) ) ){
                     // console.log("found", text, country);
-                    found = true;
-                    flag_string = country;
-                    break;
+                    // found = true;
+                    // flag_string = country;
+                    flags_key.push(country);
+                    // break;
                 }
             }
         }
+
+        for(let flag_string of flags_key ){
+            let flag = document.createElement("span");
+            flag.className = "flag";
+            flag.innerHTML = flag_string ? flags[flag_string] : "❓";
+            flag.title = flag_string;
+            flag.style.display = "inline-block";
+            flag.style.marginRight = "3px";
+            flag.style.fontSize = "1em";
+            // flag.style.fontFamily = "Twitter Color Emoji, Arial";
+            flag.style.letterSpacing = 0;
+            titleElement.prepend(flag);
+        }
       
-        let flag = document.createElement("span");
-        flag.className = "flag";
-        flag.innerHTML = flag_string ? flags[flag_string] : "❓";
-        flag.title = flag_string;
-        flag.style.display = "inline-block";
-        flag.style.marginRight = "3px";
-        flag.style.fontSize = "1em";
-        // flag.style.fontFamily = "Twitter Color Emoji, Arial";
-        flag.style.letterSpacing = 0;
-        titleElement.prepend(flag);
-      
-        if( flag_string == "china" ){
+        if( flags_key.indexOf("china") !== -1 ){
             if( hideEntries ) baseElement.style.display = "none";
             this.applyWarning( titleElement, baseElement );
         }
