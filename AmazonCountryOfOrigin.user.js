@@ -11,7 +11,7 @@
 // @match       https://www.komplett.se/*
 // @grant       none
 // @updateURL   https://github.com/MrBrax/AmazonCountryOfOrigin/raw/master/AmazonCountryOfOrigin.user.js
-// @version     1.15
+// @version     1.16
 // @author      -
 // @description 14/09/2020, 15:30:49
 // ==/UserScript==
@@ -68,6 +68,12 @@ let database = {
         /^Fujifilm X-T/i,
 
         /^NETGEAR Nighthawk/i,
+
+        // laptops
+        /^Asus VivoBook/i,
+        /^Acer Aspire/i,
+        /^Acer Nitro/i,
+        /^Acer Swift/i,
         
         // broad range
         /^Anker/i,
